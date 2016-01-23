@@ -5,7 +5,10 @@ import sys
 import socket
 
 positions = dict()
-orders = []
+unacked_orders = dict()
+acked_orders = dict()
+orders_acked = dict()
+order_ids = 0
 
 def connect():
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -14,9 +17,24 @@ def connect():
 
 def main():
     exchange = connect()
-    print("HELLO TEAMNAME", file=exchange)
-    while (msg = exchange.readline().strip()):
-        print("The exchange replied:", msg, file=sys.stderr)
+    print("HELLO DRESDEN", file=exchange)
+    msg = exchange.readline().strip()
+    while (True):
+        print("EXCH:", msg, file=sys.stderr)
+        if msg.startswith("BOOK BOND"):
+          order_book = msg.split(" ")
+            
+          add_order(exchange, "BOND", "BUY", )
+        msg = exchange.readline().strip()
+
+def add_order(e, symbol, dir, price, qty):
+  order_ids = order_ids + 1
+  print("ADD ", order_ids, " ", symbol, " ", dir, " ", price, " ", qty, file=e)
+  orders_acked[order_ids] = False
+  return order_ids
+
+
+
 
 if __name__ == "__main__":
     main()
