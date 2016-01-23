@@ -4,16 +4,19 @@ from __future__ import print_function
 import sys
 import socket
 
+positions = dict()
+orders = []
+
 def connect():
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.connect(("test-exch-teamname", 20000))
+    s.connect(("test-exch-dresden", 20000))
     return s.makefile('w+', 1)
 
 def main():
     exchange = connect()
     print("HELLO TEAMNAME", file=exchange)
-    hello_from_exchange = exchange.readline().strip()
-    print("The exchange replied:", hello_from_exchange, file=sys.stderr)
+    while (msg = exchange.readline().strip()):
+        print("The exchange replied:", msg, file=sys.stderr)
 
 if __name__ == "__main__":
     main()
